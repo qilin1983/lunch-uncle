@@ -18,9 +18,15 @@ How you work:
 
 /**
  * Build the system prompt for one request.
+ *
+ * The persona comes first and never changes, so the provider can cache it.
+ * Only the time at the end varies between requests.
  */
-export function buildSystemPrompt() {
-  const requestId = crypto.randomUUID();
-  const now = new Date().toISOString();
-  return `Request ${requestId} at ${now}. ${PERSONA}`;
+export function buildSystemPrompt(now = new Date()) {
+  const time = now.toLocaleString("en-SG", {
+    timeZone: "Asia/Singapore",
+    dateStyle: "full",
+    timeStyle: "short",
+  });
+  return `${PERSONA}\n\nIt is now ${time} in Singapore.`;
 }

@@ -75,3 +75,17 @@ test("formatPlaces measures distance from CT Hub 2", () => {
     `got ${place.distance_m}`,
   );
 });
+
+test("formatPlaces keeps whether each place is open now", () => {
+  const location = { latitude: 1.3115, longitude: 103.8615 };
+  const places = [
+    { displayName: { text: "Open" }, location, currentOpeningHours: { openNow: true } },
+    { displayName: { text: "Closed" }, location, currentOpeningHours: { openNow: false } },
+    { displayName: { text: "No hours" }, location },
+  ];
+
+  assert.deepEqual(
+    formatPlaces(places, CT_HUB_2).map((p) => p.open_now),
+    [true, false, null],
+  );
+});
